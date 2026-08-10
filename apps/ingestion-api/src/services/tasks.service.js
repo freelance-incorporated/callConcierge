@@ -14,7 +14,7 @@ export const getTaskById = async (id) => {
   });
 }
 
-export const getAllTask = async () =>{
+export const getAllTasks = async () =>{
     return await prisma.Task.findMany({
         orderBy:{
             id:'asc',
