@@ -1,1 +1,5 @@
-bullmq==3.5.1
+bullmq==3.2.1
+fastapi
+psycopg[binary]
+python-dotenv
+uvicorn[standard]

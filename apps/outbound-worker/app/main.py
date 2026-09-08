@@ -3,11 +3,9 @@ from worker import start_worker
 
 async def main():
     print("Initializing outbound worker application...")
-    # Start the BullMQ worker
     worker = start_worker()
     
     try:
-        # Keep the application alive while the worker processes jobs in the background
         while True:
             await asyncio.sleep(3600)
     except asyncio.CancelledError:

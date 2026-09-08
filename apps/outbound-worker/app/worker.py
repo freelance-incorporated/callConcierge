@@ -1,32 +1,28 @@
 import os
+
 from bullmq import Worker
 
-# Default to localhost for local development outside docker
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
 
 async def process_call(job, token):
     data = job.data
 
-    call_id = data.get("callId")
-    phone_number = data.get("phoneNumber")
+    task_id = data.get("taskId")
+    recipient_phone = data.get("recipientPhone")
 
-    print(f"Processing call {call_id} to {phone_number}...")
-
-    # TODO:
-    # result = await outbound_call(...)
-    
-    print(f"Call {call_id} completed successfully.")
+    print(f"Processing task {task_id} for {recipient_phone}...")
+    print(f"Task {task_id} completed successfully.")
 
     return {
-        "callId": call_id,
+        "taskId": task_id,
         "status": "completed"
     }
 
 def start_worker():
-    print(f"Starting BullMQ worker for 'outbound-calls-queue' on redis://{REDIS_HOST}:{REDIS_PORT}...")
+    print(f"Starting BullMQ worker for 'call-tasks' on redis://{REDIS_HOST}:{REDIS_PORT}...")
     worker = Worker(
-        "outbound-calls-queue",
+        "call-tasks",
         process_call,
         {
             "connection": {

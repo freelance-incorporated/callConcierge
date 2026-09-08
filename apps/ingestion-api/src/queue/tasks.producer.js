@@ -1,7 +1,7 @@
 import { Queue } from 'bullmq';
 import redisConnection from '../config/redis.js';
 
-const outboundTasksQueue = new Queue('outbound-calls-queue', {
+const outboundTasksQueue = new Queue('call-tasks', {
   connection: redisConnection,
 });
 
