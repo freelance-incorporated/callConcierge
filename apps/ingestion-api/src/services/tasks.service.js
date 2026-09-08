@@ -1,9 +1,15 @@
 import prisma from "@prisma/client"
+import { enqueueTask } from '../queue/tasks.producer.js';
 
 export const createTask = async (data) => {
- return await prisma.Task.create({
+ const task = await prisma.Task.create({
     data,
  });
+ await enqueueTask({
+    taskId: task.id,
+    ...data
+ });
+ return task;
 }
 
 export const getTaskById = async (id) => {
@@ -21,5 +27,3 @@ export const getAllTasks = async () =>{
         },
     });
 }
-
-

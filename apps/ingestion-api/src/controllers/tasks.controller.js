@@ -9,7 +9,7 @@ export const createTask = async (req, res, next) => {
         message:"Task creation failed!"
       })
     }
-    return res.staus(200).json({
+    return res.status(200).json({
       message:"Task created successfully"
     });
   } catch (error) {
@@ -26,7 +26,7 @@ export const getTaskById = async (req, res, next) => {
         message:"Task not found!"
       })
     }
-    return res.staus(200).json({
+    return res.status(200).json({
       message:"Task fetched successfully",
       task
     });
@@ -43,7 +43,7 @@ export const getAllTasks = async (req, res, next) => {
         message:"Task not found!"
       })
     }
-    return res.staus(200).json({
+    return res.status(200).json({
       message:"Task fetched successfully",
       tasks 
     });
