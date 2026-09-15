@@ -9,8 +9,9 @@ datasource db {
 enum TaskStatus {
   QUEUING  
   QUEUED   
+  PROCESSING
   FAILED   
-  COMPLETED
+  SUCCEEDED
 }
 
 model Task {
@@ -22,6 +23,10 @@ model Task {
   instruction    String     
   userData       Json?  
   status         TaskStatus @default(QUEUING)
+  result         Json? // final outcome for the call-task
+  failureReason  String? // reason for failure, if any
   createdAt      DateTime   @default(now())
+  startedAt      DateTime?  // when did python worker start processing the task
+  completedAt    DateTime?  //when did " " complete the task
   updatedAt      DateTime   @updatedAt
 }

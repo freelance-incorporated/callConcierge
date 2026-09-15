@@ -2,4 +2,5 @@ bullmq==3.2.1
 fastapi
 psycopg[binary]
 python-dotenv
+pydantic>=2.13,<3
 uvicorn[standard]

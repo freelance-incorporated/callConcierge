@@ -1,5 +1,8 @@
 import asyncio
-from worker import start_worker
+import logging
+import sys
+
+from .worker import start_worker
 
 async def main():
     print("Initializing outbound worker application...")
@@ -8,15 +11,12 @@ async def main():
     try:
         while True:
             await asyncio.sleep(3600)
-    except asyncio.CancelledError:
-        print("Shutting down worker...")
-        await worker.close()
-    except KeyboardInterrupt:
-        print("Shutting down worker (interrupted)...")
+    finally:
         await worker.close()
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     try:
-        asyncio.run(main())
+        asyncio.run(main(), loop_factory=asyncio.SelectorEventLoop if sys.platform == "win32" else None)
     except KeyboardInterrupt:
         pass

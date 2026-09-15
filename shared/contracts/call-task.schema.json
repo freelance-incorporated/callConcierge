@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:call-concierge:call-task:v1",
+  "title": "Call task queue message V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "taskId",
+    "userPhone",
+    "recipientPhone",
+    "instruction"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "taskId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+    },
+    "userPhone": {
+      "type": "string",
+      "pattern": "^\\+?[1-9][0-9]{1,14}$"
+    },
+    "recipientPhone": {
+      "type": "string",
+      "pattern": "^\\+?[1-9][0-9]{1,14}$"
+    },
+    "instruction": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 2000
+    },
+    "userName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 3,
+      "maxLength": 60
+    },
+    "recipientName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 3,
+      "maxLength": 60
+    },
+    "userData": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

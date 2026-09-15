@@ -3,14 +3,15 @@ import * as taskService from '../services/tasks.service.js';
 export const createTask = async (req, res, next) => {
   try {
     const data = req.body;
-    const result = await taskService.createTask(data);
-    if(!result){
+    const task = await taskService.createTask(data);
+    if(!task){
       return res.status(400).json({
         message:"Task creation failed!"
       })
     }
     return res.status(200).json({
-      message:"Task created successfully"
+      message:"Task created successfully",
+      task: task
     });
   } catch (error) {
     next(error);
