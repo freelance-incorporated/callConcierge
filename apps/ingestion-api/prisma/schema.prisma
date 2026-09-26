@@ -7,26 +7,67 @@ datasource db {
 }
 
 enum TaskStatus {
-  QUEUING  
-  QUEUED   
+  QUEUING
+  QUEUED
   PROCESSING
-  FAILED   
+  FAILED
   SUCCEEDED
+}
+
+enum CallAttemptStatus {
+  CREATED
+  DIALING
+  RINGING
+  CONNECTED
+  COMPLETED
+  NO_ANSWER
+  BUSY
+  REJECTED
+  FAILED
 }
 
 model Task {
   id             String     @id @default(uuid())
-  userPhone      String     
-  userName       String?    // ? means optional
-  recipientPhone String     
+  userPhone      String
+  userName       String?
+  recipientPhone String
   recipientName  String?
-  instruction    String     
-  userData       Json?  
+  instruction    String
+  userData       Json?
   status         TaskStatus @default(QUEUING)
-  result         Json? // final outcome for the call-task
-  failureReason  String? // reason for failure, if any
+  result         Json?
+  failureReason  String?
   createdAt      DateTime   @default(now())
-  startedAt      DateTime?  // when did python worker start processing the task
-  completedAt    DateTime?  //when did " " complete the task
+  startedAt      DateTime?
+  completedAt    DateTime?
   updatedAt      DateTime   @updatedAt
+
+  callAttempts   CallAttempt[]
+}
+
+model CallAttempt {
+  id             String            @id @default(uuid())
+  task           Task             @relation(fields: [taskId], references: [id])
+  taskId         String
+
+  attemptNumber  Int               @default(1)
+  status         CallAttemptStatus @default(CREATED)
+
+  providerCallId String?
+  provider       String?
+
+  startedAt      DateTime?
+  answeredAt     DateTime?
+  endedAt        DateTime?
+  duration       Int?
+
+  failureReason  String?
+
+  transcript     String?
+  recordingUrl   String?
+
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([taskId])
 }
