@@ -53,13 +53,14 @@ model CallAttempt {
   attemptNumber  Int               @default(1)
   status         CallAttemptStatus @default(CREATED)
 
-  providerCallId String?
-  provider       String?
+  providerCallId String
+  provider       String
 
   startedAt      DateTime?
   answeredAt     DateTime?
   endedAt        DateTime?
-  duration       Int?
+  duration       Int?//in seconds
+  
 
   failureReason  String?
 
@@ -69,5 +70,6 @@ model CallAttempt {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
-  @@index([taskId])
+  @@unique([provider, providerCallId])//prevents overlapping call ids across different providers.
+  @@unique([taskId, attemptNumber])//prevents a task having multiple records for same number of attempts
 }
