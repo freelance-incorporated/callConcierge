@@ -17,6 +17,13 @@ async def main():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     try:
-        asyncio.run(main(), loop_factory=asyncio.SelectorEventLoop if sys.platform == "win32" else None)
+        if sys.platform == "win32":
+            if sys.version_info >= (3, 12):
+                asyncio.run(main(), loop_factory=asyncio.SelectorEventLoop)
+            else:
+                getattr(asyncio, "set_event_loop_policy")(asyncio.WindowsSelectorEventLoopPolicy())
+                asyncio.run(main())
+        else:
+            asyncio.run(main())
     except KeyboardInterrupt:
         pass

@@ -4,3 +4,8 @@ psycopg[binary]
 python-dotenv
 pydantic>=2.13,<3
 uvicorn[standard]
+twilio>=9.0,<10
+pipecat-ai[deepgram,cartesia,openai]>=0.0.50
+websockets>=13.0
+
+

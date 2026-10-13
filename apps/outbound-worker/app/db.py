@@ -1,19 +1,19 @@
 import os
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from dotenv import load_dotenv
 from psycopg import AsyncConnection
-from psycopg.rows import dict_row
+from psycopg.rows import DictRow, dict_row
 
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 DB_URL = os.getenv(
     "DB_URL",
-    "postgresql://root:password@localhost:5432/outbound_concierge",
+    "postgresql://root:password@localhost:5433/outbound_concierge",
 )
 _url = urlsplit(DB_URL)
 _query = dict(parse_qsl(_url.query))
@@ -22,6 +22,6 @@ DB_URL = urlunsplit(_url._replace(query=urlencode(_query)))
 
 
 @asynccontextmanager
-async def get_db_connection() -> AsyncIterator[AsyncConnection]:
-    async with await AsyncConnection.connect(DB_URL, row_factory=dict_row, options=f'-csearch_path="{DB_SCHEMA}"') as connection:
+async def get_db_connection() -> AsyncGenerator[AsyncConnection[DictRow], None]:
+    async with await AsyncConnection[DictRow].connect(DB_URL, row_factory=dict_row, options=f'-csearch_path="{DB_SCHEMA}"') as connection:
         yield connection

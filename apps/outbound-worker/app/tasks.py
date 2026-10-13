@@ -1,14 +1,16 @@
+from typing import Any
+
 from psycopg.types.json import Jsonb
 
 from .db import get_db_connection
 
-
 class TaskPersistence:
-    async def _execute(self, query, params):
+    async def _execute(
+        self, query: str, params: tuple
+    ) -> dict[str, Any] | None:
         async with get_db_connection() as connection:
             cursor = await connection.execute(query, params)
             return await cursor.fetchone()
-
     async def get_task(self, task_id):
         return await self._execute('SELECT * FROM "Task" WHERE id = %s', (task_id,))
 

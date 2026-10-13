@@ -1,11 +1,12 @@
 import logging
 import os
+from typing import Any, cast
 
 from bullmq import UnrecoverableError, Worker
 from pydantic import ValidationError
 
 from .contracts import CallTaskV1
-from .processor import fake_process
+from .processor import process_outbound_call
 from .tasks import TaskPersistence
 
 
@@ -37,7 +38,7 @@ async def process_call(job, token):
 
     logger.info("Task %s entered PROCESSING", task_id)
     try:
-        result = await fake_process(message)
+       result = await process_outbound_call(message)
     except Exception as error:
         failed = await tasks.fail_task(task_id, str(error))
         if failed is None:
@@ -55,7 +56,7 @@ async def process_call(job, token):
 def start_worker():
     worker = Worker(
         "call-tasks",
-        process_call,
+        cast(Any, process_call),
         {
             "connection": os.environ.get("REDIS_URL") or {
                 "host": os.environ.get("REDIS_HOST", "localhost"),

@@ -53,7 +53,7 @@ model CallAttempt {
   attemptNumber  Int               @default(1)
   status         CallAttemptStatus @default(CREATED)
 
-  providerCallId String
+  providerCallId String?
   provider       String
 
   startedAt      DateTime?

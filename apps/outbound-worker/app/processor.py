@@ -1,11 +1,12 @@
-import asyncio
+from .telephony import place_greeting_call
 
 
-async def fake_process(message):
-    await asyncio.sleep(0.5)
-    if message.instruction == "SIMULATE_FAILURE":
-        raise RuntimeError("Simulated processing failure")
+async def process_outbound_call(message):
+    call_sid = await place_greeting_call(message.recipientPhone)
+
     return {
-        "outcome": "SIMULATED_SUCCESS",
-        "summary": "Fake processing completed successfully",
+        "outcome": "CALL_INITIATED",
+        "callSid": call_sid,
+        "recipientPhone": message.recipientPhone,
+        "summary": "Twilio accepted the outbound call request.",
     }

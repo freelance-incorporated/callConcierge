@@ -1,0 +1,10 @@
+{
+  "pythonVersion": "3.10",
+  "venvPath": "apps/outbound-worker",
+  "venv": ".venv",
+  "extraPaths": [
+    "apps/outbound-worker",
+    "apps/outbound-worker/app",
+    "apps/outbound-worker/.venv/Lib/site-packages"
+  ]
+}
