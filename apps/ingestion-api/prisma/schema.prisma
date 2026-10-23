@@ -53,8 +53,8 @@ model CallAttempt {
   attemptNumber  Int               @default(1)
   status         CallAttemptStatus @default(CREATED)
 
-  providerCallId String?
-  provider       String            @default("Twilio")
+  providerCallId String
+  provider       String
 
   startedAt      DateTime?
   answeredAt     DateTime?

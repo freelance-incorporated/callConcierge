@@ -1,5 +1,5 @@
 import os
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
@@ -22,6 +22,6 @@ DB_URL = urlunsplit(_url._replace(query=urlencode(_query)))
 
 
 @asynccontextmanager
-async def get_db_connection() -> AsyncGenerator[AsyncConnection]:
+async def get_db_connection() -> AsyncIterator[AsyncConnection]:
     async with await AsyncConnection.connect(DB_URL, row_factory=dict_row, options=f'-csearch_path="{DB_SCHEMA}"') as connection:
         yield connection
